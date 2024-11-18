@@ -41,6 +41,17 @@ jobs:
       id: init
       run: tofu init
 
+    - uses: terraform-linters/setup-tflint@v4
+      name: Setup TFLint
+
+    - name: Init TFLint
+      run: tflint --init
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+
+    - name: Run TFLint
+      run: tflint -f compact
+
     - name: OpenTofu Validate
       env:
         GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
