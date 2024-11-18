@@ -1,0 +1,55 @@
+---
+name: main
+
+concurrency: main
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - '.github/workflows/**'
+    - 'modules/**'
+    - '**.tf'
+    - '**.tfvars'
+    - 'backend.hcl'
+    - '**.sh'
+
+jobs:
+  tofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v1
+      with:
+        tofu_wrapper: false
+    # - name: Configure tofu Cloud credentials
+    #   env:
+    #     TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+    #   run: |
+    #     cat <<EOF > ~/.terraformrc
+    #     credentials "app.terraform.io" {
+    #       token = "${TF_CLOUD_TOKEN}"
+    #     }
+    #     EOF
+    - name: OpenTofu Init
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+      id: init
+      run: tofu init
+
+    - name: OpenTofu Validate
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+      id: validate
+      run: tofu validate -no-color
+
+    - name: OpenTofu Plan
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+      id: plan
+      run: tofu plan -no-color
+      continue-on-error: true
