@@ -26,7 +26,7 @@ jobs:
       uses: opentofu/setup-opentofu@v1
       with:
         tofu_wrapper: false
-    # - name: Configure tofu Cloud credentials
+    # - name: Configure Terraform Cloud credentials
     #   env:
     #     TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
     #   run: |
@@ -35,12 +35,8 @@ jobs:
     #       token = "${TF_CLOUD_TOKEN}"
     #     }
     #     EOF
-    - name: OpenTofu Init
-      env:
-        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
-      id: init
-      run: tofu init
 
+    # --- TFLint --- #
     - uses: terraform-linters/setup-tflint@v4
       name: Setup TFLint
 
@@ -51,6 +47,13 @@ jobs:
 
     - name: Run TFLint
       run: tflint -f compact
+
+    # --- OpenTofu --- #
+    - name: OpenTofu Init
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+      id: init
+      run: tofu init
 
     - name: OpenTofu Validate
       env:
