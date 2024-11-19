@@ -33,3 +33,11 @@ variable "repos" {
 variable "owners" {
   type = list(string)
 }
+
+variable "username" {
+  type = string
+}
+
+variable "password" {
+  type = string
+}
