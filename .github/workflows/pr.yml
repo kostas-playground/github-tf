@@ -1,20 +1,9 @@
----
-name: pr
-
-concurrency:
-  group: ${{ github.ref_name }}
-  cancel-in-progress: true
+name: Pull Request
 
 on:
   pull_request:
     branches: [ main ]
-    paths:  
-    - '.github/workflows/**'
-    - 'modules/**'
-    - '**.tf'
-    - '**.tfvars'
-    - 'backend.hcl'
-    - '**.sh'
+
 jobs:
   tflint:
     runs-on: ubuntu-latest
