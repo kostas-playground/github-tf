@@ -7,13 +7,14 @@ concurrency:
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/**'
-      - 'modules/**'
-      - '**.tf'
-      - '**.tfvars'
-      - 'backend.hcl'
-      - '**.sh'
+    branches: [ main ]
+    paths:  
+    - '.github/workflows/**'
+    - 'modules/**'
+    - '**.tf'
+    - '**.tfvars'
+    - 'backend.hcl'
+    - '**.sh'
 jobs:
   tflint:
     runs-on: ubuntu-latest
