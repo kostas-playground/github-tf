@@ -12,6 +12,7 @@ on:
     - '**.tfvars'
     - 'backend.hcl'
     - '**.sh'
+  workflow_dispatch:
 
 jobs:
   tofu:
