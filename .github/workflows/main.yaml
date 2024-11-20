@@ -26,16 +26,7 @@ jobs:
       uses: opentofu/setup-opentofu@v1
       with:
         tofu_wrapper: false
-    # - name: Configure Terraform Cloud credentials
-    #   env:
-    #     TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
-    #   run: |
-    #     cat <<EOF > ~/.terraformrc
-    #     credentials "app.terraform.io" {
-    #       token = "${TF_CLOUD_TOKEN}"
-    #     }
-    #     EOF
-
+        
     # --- TFLint --- #
     - uses: terraform-linters/setup-tflint@v4
       name: Setup TFLint

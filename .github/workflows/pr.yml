@@ -1,0 +1,93 @@
+---
+name: pr
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'modules/**'
+      - '**.tf'
+      - '**.tfvars'
+      - 'backend.hcl'
+      - '**.sh'
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    # --- TFLint --- #
+    - uses: terraform-linters/setup-tflint@v4
+      name: Setup TFLint
+
+    - name: Init TFLint
+      run: tflint --init
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+
+    - name: Run TFLint
+      run: tflint -f compact
+  tfsec:
+    name: tfsec PR commenter
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4
+      - name: tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
+        with:
+          github_token: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+  tofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    # --- OpenTofu --- #
+    - uses: actions/checkout@v4
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v1
+      with:
+        tofu_wrapper: false
+
+    - name: OpenTofu Init
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+        TF_VAR_username: ${{ secrets.BACKEND_USERNAME }}
+        TF_VAR_password: ${{ secrets.BACKEND_PASSWORD }}
+      id: init
+      run: tofu init
+
+    - name: OpenTofu Validate
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+        TF_VAR_username: ${{ secrets.BACKEND_USERNAME }}
+        TF_VAR_password: ${{ secrets.BACKEND_PASSWORD }}
+      id: validate
+      run: tofu validate -no-color
+
+    - name: OpenTofu Plan
+      env:
+        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
+        TF_VAR_username: ${{ secrets.BACKEND_USERNAME }}
+        TF_VAR_password: ${{ secrets.BACKEND_PASSWORD }}
+      id: plan
+      run: tofu plan | tee tofu_plan_output.txt
+      continue-on-error: true
+
+    - name: Print job summary
+      uses: sgametrio/terraform-summary-action@main
+      with:
+        log-file: tofu_plan_output.txt
+        # Optional
+        title: Tofu Job Summary
