@@ -27,6 +27,7 @@ variable "repos" {
     push_access = optional(list(string))
     maintain_access = optional(list(string))
     admin_access = optional(list(string))
+    secrets_access = optional(list(string))
   }))
 }
 

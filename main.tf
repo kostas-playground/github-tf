@@ -20,6 +20,7 @@ module "repo" {
   push_access     = try(each.value.push_access, [])
   maintain_access = try(each.value.maintain_access, [])
   admin_access    = try(each.value.admin_access, [])
+  secrets_access  = try(each.value.secrets_access, [])
 }
 
 module "team" {

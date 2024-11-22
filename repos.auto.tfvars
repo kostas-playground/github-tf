@@ -10,5 +10,6 @@ repos = {
     push_access = []
     maintain_access = []
     admin_access = ["devops"]
+    secrets_access = ["MY_TEST_SECRET"]
   }
 }

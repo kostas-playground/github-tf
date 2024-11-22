@@ -200,3 +200,10 @@ resource "github_team_repository" "team_with_admin_access" {
   repository = github_repository.repo.name
   permission = "admin"
 }
+
+resource "github_actions_organization_secret_repositories" "org_secret_repos" {
+  for_each = toset(var.secrets_access)
+
+  secret_name = each.value
+  selected_repository_ids = [github_repository.repo.repo_id]
+}

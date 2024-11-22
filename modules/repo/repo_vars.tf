@@ -86,3 +86,8 @@ variable "admin_access" {
   type = list(string)
   default = []
 }
+
+variable "secrets_access" {
+  type = list(string)
+  default = []
+}

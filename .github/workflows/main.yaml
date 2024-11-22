@@ -15,6 +15,10 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    name: Lint Terraform Configuration
+    uses: ./.github/workflows/tflint.yml
+
   tofu:
     runs-on: ubuntu-latest
     defaults:
@@ -27,19 +31,6 @@ jobs:
       with:
         tofu_wrapper: false
 
-    # --- TFLint --- #
-    - uses: terraform-linters/setup-tflint@v4
-      name: Setup TFLint
-
-    - name: Init TFLint
-      run: tflint --init
-      env:
-        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
-
-    - name: Run TFLint
-      run: tflint -f compact
-
-    # --- OpenTofu --- #
     - name: OpenTofu Init
       env:
         GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
