@@ -2,7 +2,7 @@
 
 - [EXUS GitHub Management](#exus-github-management)
   - [What is This Repo ❓](#what-is-this-repo-)
-  - [How to Use this Repository ❓](#how-to-use-this-repository-)
+  - [How to Use This Repository ❓](#how-to-use-this-repository-)
     - [Creating a Team 👨‍👨‍👦‍👦](#creating-a-team-)
     - [Creating a Repository 🗃️](#creating-a-repository-️)
   - [TO-DO ✅](#to-do-)
@@ -12,7 +12,7 @@
 
 This repository serves as a control plane to manage the GitHub resources of EXUS organization. This includes teams, repos, secrets etc.
 
-## How to Use this Repository ❓
+## How to Use This Repository ❓
 
 The main files you need to modify in order to manage resources are the `teams.auto.tfvars` file to manage teams, and the `repo.auto.tfvars` to manage repos.
 
@@ -89,10 +89,10 @@ repos = {
 ```
 
 ## TO-DO ✅
-- [] Add option to create/manage secrets 
-- [] Explain the options when creating a repo
+- [ ] Add option to create/manage secrets 
+- [ ] Explain the options when creating a repo
 
 ## Authors 📝
 [Kostas Chikimtzis](https://github.com/kchikimtzis)
 
-Document version 1.0
+Document version 1.1
