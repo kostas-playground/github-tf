@@ -20,6 +20,7 @@ jobs:
     uses: ./.github/workflows/tflint.yml
 
   tofu:
+    needs: lint
     runs-on: ubuntu-latest
     defaults:
       run:

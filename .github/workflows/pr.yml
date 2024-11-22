@@ -5,45 +5,17 @@ on:
     branches: [ main ]
 
 jobs:
-  tflint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-    # --- TFLint --- #
-    - uses: terraform-linters/setup-tflint@v4
-      name: Setup TFLint
+  lint:
+    name: Lint Terraform Configuration
+    uses: ./.github/workflows/tflint.yml
 
-    - name: Init TFLint
-      run: tflint --init
-      env:
-        GITHUB_TOKEN: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
-
-    - name: Run TFLint
-      run: tflint -f compact
-  tfsec:
-    name: tfsec PR commenter
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      pull-requests: write
-
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v4
-      - name: tfsec
-        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
-        with:
-          github_token: ${{ secrets.KOSTAS_GITHUB_API_TOKEN }}
   tofu:
+    needs: lint
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
     steps:
-    # --- OpenTofu --- #
     - uses: actions/checkout@v4
     - name: Setup OpenTofu
       uses: opentofu/setup-opentofu@v1
